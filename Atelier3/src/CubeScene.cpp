@@ -64,6 +64,18 @@ CCubeScene::CCubeScene()
 	}
 
 	{
+		m_indexBuffer = OpenGl::CBuffer::Create();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_indices), g_indices, GL_STATIC_DRAW);
+	}
+
+	{
+		m_uniformBuffer = OpenGl::CBuffer::Create();
+		glBindBuffer(GL_UNIFORM_BUFFER, m_uniformBuffer);
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(m_matrices), &m_matrices, GL_DYNAMIC_DRAW);
+	}
+
+	{
 		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/proj_v.glsl");
 		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/proj_f.glsl");
 
@@ -104,6 +116,17 @@ CCubeScene::CCubeScene()
 void CCubeScene::Update(double dt)
 {
 	CScene::Update(dt);
+
+	float aspectRatio = static_cast<float>(m_windowWidth) / static_cast<float>(m_windowHeight);
+
+	glm::mat4 projMat = glm::perspective(glm::pi<float>() * 0.25f, aspectRatio, 0.1f, 1000.f);
+	glm::mat4 viewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.f));
+	glm::mat4 worldMat = glm::rotate(glm::mat4(1.0f), static_cast<float>(m_currentTime * 2), glm::vec3(0.5f, 1.0f, 0.5f));
+
+	m_matrices.worldViewProjMatrix = projMat * viewMat * worldMat;
+
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uniformBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_matrices), &m_matrices, GL_DYNAMIC_DRAW);
 }
 
 void CCubeScene::Draw()
@@ -113,4 +136,15 @@ void CCubeScene::Draw()
 	glClearDepthf(1.0f);
 	glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+
+	glUseProgram(m_program);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_uniformBuffer);
+	glBindVertexArray(m_vertexArray);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, nullptr);
 }

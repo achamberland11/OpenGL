@@ -55,6 +55,7 @@ int main(int argc, const char** argv)
 	}
 
 	CCubeScene scene;
+  //CMeshScene scene;
 	double lastTime = glfwGetTime();
 	while(!glfwWindowShouldClose(window))
 	{
