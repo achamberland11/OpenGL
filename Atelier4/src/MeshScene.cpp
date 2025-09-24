@@ -136,7 +136,20 @@ void CMeshScene::Update(double dt)
 	glBindBuffer(GL_UNIFORM_BUFFER, m_matricesUniformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_matrices), &m_matrices, GL_DYNAMIC_DRAW);
 
-	// A remplir
+	m_lights.viewDir = viewMat[2];
+	m_lights.lights[0].type = LIGHT_TYPE::DIRECTIONAL;
+	m_lights.lights[0].ambientColor = glm::vec4(0.1, 0.1, 0.1, 0);
+	m_lights.lights[0].diffuseColor = glm::vec4(1.0, 0.0, 0.0, 0);
+	m_lights.lights[0].specColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
+	m_lights.lights[0].dir = glm::vec4(sin(m_currentTime), 0, cos(m_currentTime), 0);
+
+	m_lights.lights[1].diffuseColor = glm::vec4(1, 1, 1, 0);
+	m_lights.lights[1].specColor = glm::vec4(1, 1, 1, 0);
+	m_lights.lights[1].pos = glm::vec4(0.0f, 0.5 * cos(m_currentTime * 5), 0.75f,
+	                                   0.0f);
+	m_lights.lights[1].type = LIGHT_TYPE::POINT;
+	m_lights.lights[1].linAttenuation = 2;
+	m_lights.lights[1].quadAttenuation = 10;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_lightsUniformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_lights), &m_lights, GL_DYNAMIC_DRAW);
