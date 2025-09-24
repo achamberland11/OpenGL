@@ -111,6 +111,10 @@ CCubeScene::CCubeScene()
 
 		glBindVertexArray(0);
 	}
+
+	m_matricesUniformBinding = glGetUniformBlockIndex(m_program, "Matrices");
+	assert(m_matricesUniformBinding != GL_INVALID_INDEX);
+	glUniformBlockBinding(m_program, m_matricesUniformBinding, 0);
 }
 
 void CCubeScene::Update(double dt)
