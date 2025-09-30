@@ -73,8 +73,8 @@ CMeshScene::CMeshScene()
 	}
 
 	{
-		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/proj_v.glsl");
-		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/proj_f.glsl");
+		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "../shaders/proj_v.glsl");
+		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "../shaders/proj_f.glsl");
 
 		vertShader.Compile();
 		fragShader.Compile();

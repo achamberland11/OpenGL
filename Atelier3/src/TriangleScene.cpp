@@ -35,8 +35,8 @@ CTriangleScene::CTriangleScene()
 	}
 
 	{
-		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/simple_v.glsl");
-		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/simple_f.glsl");
+		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "../shaders/simple_v.glsl");
+		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "../shaders/simple_f.glsl");
 
 		vertShader.Compile();
 		fragShader.Compile();
