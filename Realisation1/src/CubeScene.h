@@ -24,7 +24,9 @@ private:
 
 	struct Matrices
 	{
-		glm::mat4 worldViewProjMatrix;
+		glm::mat4 worldMatrix;     // used by mesh
+		glm::mat4 viewProjMatrix;  // used by both
+		glm::mat4 cubeWorldMatrix; // used by cube
 	};
 
 	struct Light
