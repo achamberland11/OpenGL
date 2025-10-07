@@ -47,11 +47,11 @@ private:
 		alignas(16) Light lights[2];
 	};
 
-	OpenGl::CBuffer m_MeshvertexBuffer;
-	OpenGl::CBuffer m_MeshindexBuffer;
+	OpenGl::CBuffer m_vertexBuffer;
+	OpenGl::CBuffer m_indexBuffer;
 	OpenGl::CBuffer m_matricesUniformBuffer;
 	OpenGl::CBuffer m_lightsUniformBuffer;
-	OpenGl::CVertexArray m_MeshvertexArray;
+	OpenGl::CVertexArray m_vertexArray;
 	OpenGl::CProgram m_program;
 
 	Matrices m_matrices = {};

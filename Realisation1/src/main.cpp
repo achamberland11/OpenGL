@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 #include "MeshScene.h"
-#include "CubeScene.h"
 
 void GlMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam)
 {
@@ -51,16 +50,6 @@ int main(int argc, const char** argv)
 		glDebugMessageCallback(GlMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
-
-
-
-
-
-
-
-
-
-
 
 	CMeshScene scene;
 	double lastTime = glfwGetTime();
