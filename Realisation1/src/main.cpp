@@ -1,6 +1,8 @@
 #include "OpenGlDef.h"
 #include <GLFW/glfw3.h>
 #include <cstdio>
+#include "CubeScene.h"
+#include "TriangleScene.h"
 #include "MeshScene.h"
 
 void GlMessageCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam)
@@ -51,18 +53,33 @@ int main(int argc, const char** argv)
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 
-	CMeshScene scene;
+	// CCubeScene scene;
+	CCubeScene cubeScene;
+	CMeshScene meshScene;
 	double lastTime = glfwGetTime();
 	while(!glfwWindowShouldClose(window))
 	{
 		int width, height;
 		glfwGetFramebufferSize(window, &width, &height);
-		scene.SetWindowSize(width, height);
+		// scene.SetWindowSize(width, height);
+		cubeScene.SetWindowSize(width, height);
+		meshScene.SetWindowSize(width, height);
 
 		double currentTime = glfwGetTime();
 
-		scene.Update(currentTime - lastTime);
-		scene.Draw();
+		glViewport(0, 0, width, height);
+		glClearDepth(1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// scene.Update(currentTime - lastTime);
+		// scene.Draw();
+
+		cubeScene.Update(currentTime - lastTime);
+		meshScene.Update(currentTime - lastTime);
+
+		cubeScene.Draw();
+		meshScene.Draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
