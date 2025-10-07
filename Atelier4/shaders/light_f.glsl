@@ -32,10 +32,6 @@ layout(std140) uniform Lights
 
 vec4 computeLighting(int lightIndex, vec3 normal)
 {
-<<<<<<< Updated upstream
-    //A remplir
-    return vec4(1);
-=======
     Light light = lights[lightIndex];
     vec3 lightDir = vec3(0, 0, 0);
     float attenuation = 1;
@@ -58,7 +54,6 @@ vec4 computeLighting(int lightIndex, vec3 normal)
     float specComp = pow(clamp(dot(viewDir, reflectDir), 0, 1), 100);
 
     return attenuation * (light.ambientColor + diffuseComp * light.diffuseColor + specComp * light.specularColor);
->>>>>>> Stashed changes
 }
 
 void main()

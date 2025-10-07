@@ -31,9 +31,15 @@ namespace
 CMeshScene::CMeshScene()
 {
 	Assimp::Importer importer;
-	importer.ReadFile("./models/bunny.obj", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
+	importer.ReadFile("../models/bunny.obj", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
 	auto scene = importer.GetScene();
+	if(!scene || !scene->mRootNode)
+	{
+		printf("Failed to load model: %s\n", importer.GetErrorString());
+		assert(false);
+	}
 	assert(scene->HasMeshes());
+
 	auto mesh = scene->mMeshes[0];
 
 	std::vector<VERTEX> vertices;
@@ -84,10 +90,12 @@ CMeshScene::CMeshScene()
 		m_program = OpenGl::CProgram::Create();
 		m_program.AttachShader(vertShader);
 		m_program.AttachShader(fragShader);
-		m_program.Link();
 
 		glBindAttribLocation(m_program, static_cast<GLuint>(VERTEX_ATTRIBUTES::POSITION), "a_position");
 		glBindAttribLocation(m_program, static_cast<GLuint>(VERTEX_ATTRIBUTES::NORMAL), "a_normal");
+
+		m_program.Link();
+
 
 		{
 			GLint uniformBinding = glGetUniformBlockIndex(m_program, "Matrices");
