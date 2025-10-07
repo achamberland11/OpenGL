@@ -181,6 +181,7 @@ void CMeshScene::Draw()
 	glDepthFunc(GL_LEQUAL);
 
 	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
 
 	glUseProgram(m_program);
 	glBindBufferBase(GL_UNIFORM_BUFFER, UNIFORM_BINDINGS::MATRICES, m_matricesUniformBuffer);

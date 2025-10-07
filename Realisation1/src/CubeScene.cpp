@@ -136,31 +136,13 @@ void CCubeScene::Update(double dt)
 
 	glm::mat4 projMat = glm::perspective(glm::pi<float>() * 0.25f, aspectRatio, 0.1f, 1000.f);
 	glm::mat4 viewMat = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, -5.f));
-	glm::mat4 worldMat = glm::rotate(glm::mat4(1.0f), static_cast<float>(m_currentTime * 2), glm::vec3(0.5f, 1.0f, 0.5f));
+	glm::mat4 worldMat = glm::rotate(glm::mat4(1.0f), static_cast<float>(0.f), glm::vec3(0.5f, 0.1f, 0.5f));
 	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 
 	m_matrices.worldViewProjMatrix = projMat * viewMat * scaleMat * worldMat;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_uniformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_matrices), &m_matrices, GL_DYNAMIC_DRAW);
-
-	m_lights.viewDir = viewMat[2];
-
-	m_lights.lights[0].type = LIGHT_TYPE::DIRECTIONAL;
-	m_lights.lights[0].ambientColor = glm::vec4(0.1, 0.1, 0.2, 0);
-	m_lights.lights[0].diffuseColor = glm::vec4(1.0, 0.0, 0.0, 0);
-	m_lights.lights[0].specColor = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-	m_lights.lights[0].dir = glm::vec4(sin(m_currentTime * 25.f), 0, cos(m_currentTime * 25.f), 0);
-
-	m_lights.lights[1].diffuseColor = glm::vec4(0, 1, 0, 0);
-	m_lights.lights[1].specColor = glm::vec4(0, 1, 0, 0);
-	m_lights.lights[1].pos = glm::vec4(0.0f, 0.5, 0.75f, 0.0f);
-	m_lights.lights[1].type = LIGHT_TYPE::POINT;
-	m_lights.lights[1].linAttenuation = 2;
-	m_lights.lights[1].quadAttenuation = 1;
-
-	glBindBuffer(GL_UNIFORM_BUFFER, m_lightsUniformBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_lights), &m_lights, GL_DYNAMIC_DRAW);
 }
 
 void CCubeScene::Draw()
