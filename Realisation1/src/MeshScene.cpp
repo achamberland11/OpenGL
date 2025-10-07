@@ -31,7 +31,7 @@ namespace
 CMeshScene::CMeshScene()
 {
 	Assimp::Importer importer;
-	importer.ReadFile("./models/bunny.obj", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
+	importer.ReadFile("./models/cat.fbx", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
 	auto scene = importer.GetScene();
 	if(!scene || !scene->mRootNode)
 	{
@@ -135,10 +135,14 @@ void CMeshScene::Update(double dt)
 	float aspectRatio = static_cast<float>(m_windowWidth) / static_cast<float>(m_windowHeight);
 
 	glm::mat4 projMat = glm::perspective(glm::pi<float>() * 0.25f, aspectRatio, 0.1f, 1000.f);
-	glm::mat4 viewMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.1f, -0.3f));
-	glm::mat4 worldMat = glm::mat4(1.0f);
+	glm::mat4 viewMat = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f * sin(m_currentTime * 1.25f), -5.0f));
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(0.075f));
 
-	m_matrices.worldMatrix = worldMat;
+	glm::mat4 animatedRot = glm::rotate(glm::mat4(1.0f), static_cast<float>(m_currentTime * 8), glm::vec3(0.f, 0.f, 0.5f));
+	glm::mat4 flipMat = glm::rotate(glm::mat4(1.0f), glm::half_pi<float>(), glm::vec3(-0.5f, 0.65f, 0.75f));
+	glm::mat4 worldMat = flipMat * animatedRot;
+
+	m_matrices.worldMatrix = scaleMat * worldMat;
 	m_matrices.viewProjMatrix = projMat * viewMat;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_matricesUniformBuffer);
@@ -147,14 +151,14 @@ void CMeshScene::Update(double dt)
 	m_lights.viewDir = viewMat[2];
 
 	m_lights.lights[0].type = LIGHT_TYPE::DIRECTIONAL;
-	m_lights.lights[0].ambientColor = glm::vec4(0.1, 0.1, sin(m_currentTime * 5), 0);
+	m_lights.lights[0].ambientColor = glm::vec4(0.1, 0.1, 0.2, 0);
 	m_lights.lights[0].diffuseColor = glm::vec4(1.0, 0.0, 0.0, 0);
-	m_lights.lights[0].specColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-	m_lights.lights[0].dir = glm::vec4(sin(m_currentTime), 0, cos(m_currentTime), 0);
+	m_lights.lights[0].specColor = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	m_lights.lights[0].dir = glm::vec4(sin(m_currentTime*25.f), 0, cos(m_currentTime*25.f), 0);
 
-	m_lights.lights[1].diffuseColor = glm::vec4(1, 1, 1, 0);
-	m_lights.lights[1].specColor = glm::vec4(1, 1, 1, 0);
-	m_lights.lights[1].pos = glm::vec4(0.0f, 0.5 * cos(m_currentTime * 5), 0.75f, 0.0f);
+	m_lights.lights[1].diffuseColor = glm::vec4(0, 1, 0, 0);
+	m_lights.lights[1].specColor = glm::vec4(0, 1, 0, 0);
+	m_lights.lights[1].pos = glm::vec4(0.0f, 0.5, 0.75f, 0.0f);
 	m_lights.lights[1].type = LIGHT_TYPE::POINT;
 	m_lights.lights[1].linAttenuation = 2;
 	m_lights.lights[1].quadAttenuation = 1;
