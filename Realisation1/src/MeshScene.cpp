@@ -31,7 +31,7 @@ namespace
 CMeshScene::CMeshScene()
 {
 	Assimp::Importer importer;
-	importer.ReadFile("../models/bunny.obj", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
+	importer.ReadFile("./models/bunny.obj", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
 	auto scene = importer.GetScene();
 	if(!scene || !scene->mRootNode)
 	{
@@ -81,8 +81,8 @@ CMeshScene::CMeshScene()
 	m_lightsUniformBuffer = OpenGl::CBuffer::Create();
 
 	{
-		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "../shaders/light_v.glsl");
-		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "../shaders/light_f.glsl");
+		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/light_v.glsl");
+		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/light_f.glsl");
 
 		vertShader.Compile();
 		fragShader.Compile();
