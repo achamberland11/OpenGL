@@ -84,8 +84,8 @@ CCubeScene::CCubeScene()
 	m_lightsUniformBuffer = OpenGl::CBuffer::Create();
 
 	{
-		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/proj_v.glsl");
-		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/proj_f.glsl");
+		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "../shaders/proj_v.glsl");
+		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "../shaders/proj_f.glsl");
 
 		vertShader.Compile();
 		fragShader.Compile();
@@ -147,13 +147,11 @@ void CCubeScene::Update(double dt)
 
 void CCubeScene::Draw()
 {
-	/*
 	glViewport(0, 0, m_windowWidth, m_windowHeight);
 
 	glClearDepthf(1.0f);
 	glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	*/
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);

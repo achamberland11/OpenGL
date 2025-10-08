@@ -31,7 +31,7 @@ namespace
 CMeshScene::CMeshScene()
 {
 	Assimp::Importer importer;
-	importer.ReadFile("./models/cat.fbx", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
+	importer.ReadFile("../models/cat.fbx", aiProcess_Triangulate | aiProcess_GenSmoothNormals);
 	auto scene = importer.GetScene();
 	if(!scene || !scene->mRootNode)
 	{
@@ -81,8 +81,8 @@ CMeshScene::CMeshScene()
 	m_lightsUniformBuffer = OpenGl::CBuffer::Create();
 
 	{
-		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/light_v.glsl");
-		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/light_f.glsl");
+		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "../shaders/light_v.glsl");
+		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "../shaders/light_f.glsl");
 
 		vertShader.Compile();
 		fragShader.Compile();
@@ -169,13 +169,11 @@ void CMeshScene::Update(double dt)
 
 void CMeshScene::Draw()
 {
-	/*
 	glViewport(0, 0, m_windowWidth, m_windowHeight);
 
 	glClearDepthf(1.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	*/
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);

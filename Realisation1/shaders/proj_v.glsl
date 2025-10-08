@@ -1,16 +1,22 @@
 #version 330 core
 
 in vec3 a_position;
-in vec4 a_color;
-out vec4 v_color;
+in vec3 a_normal;
+out vec3 v_normal;
+out vec3 v_worldPos;
 
 layout(std140) uniform Matrices
 {
     mat4 worldViewProjMatrix;
+    mat4 worldMatrix;
+    mat4 viewProjMatrix;
 };
 
 void main()
 {
+    vec4 worldPos = worldViewProjMatrix * vec4(a_position, 1);
+    vec4 worldNrm = worldMatrix * vec4(a_normal, 0);
+    v_normal = normalize(worldNrm.xyz);
+    v_worldPos = worldPos.xyz;
     gl_Position = worldViewProjMatrix * vec4(a_position, 1);
-    v_color = a_color;
 }

@@ -10,11 +10,13 @@ add_library(glad ./deps/glad/src/gl.c)
 target_include_directories(glad PUBLIC ./deps/glad/include)
 
 add_executable(pgj1303
-    ./src/main.cpp    
+    ./src/main.cpp
     ./src/CubeScene.cpp
     ./src/CubeScene.h
     ./src/MeshScene.cpp
     ./src/MeshScene.h
+    ./src/MainScene.cpp
+    ./src/MainScene.h
     ./src/OpenGlDef.h
     ./src/OpenGlProgram.h
     ./src/OpenGlResource.h
