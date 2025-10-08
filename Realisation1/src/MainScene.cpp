@@ -293,8 +293,8 @@ void CMainScene::Update(double dt)
 		glm::mat4 cubeWorldMat = cubeScaleMat * cubeRotMat;
 
 		m_cubeMatrices.worldViewProjMatrix = projCubeMat * viewCubeMat * cubeWorldMat;
-		// m_cubeMatrices.worldMatrix = cubeWorldMat;
-		// m_cubeMatrices.viewProjMatrix = projCubeMat * viewCubeMat;
+		m_cubeMatrices.worldMatrix = cubeWorldMat;
+		m_cubeMatrices.viewProjMatrix = projCubeMat * viewCubeMat;
 
 		glBindBuffer(GL_UNIFORM_BUFFER, m_cubeMatricesUniformBuffer);
 		glBufferData(GL_UNIFORM_BUFFER, sizeof(m_cubeMatrices), &m_cubeMatrices, GL_DYNAMIC_DRAW);
