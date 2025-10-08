@@ -15,8 +15,6 @@ add_executable(pgj1303
     ./src/CubeScene.h
     ./src/MeshScene.cpp
     ./src/MeshScene.h
-    ./src/TriangleScene.cpp
-    ./src/TriangleScene.h
     ./src/OpenGlDef.h
     ./src/OpenGlProgram.h
     ./src/OpenGlResource.h
