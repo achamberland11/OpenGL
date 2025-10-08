@@ -72,6 +72,11 @@ CPlaneScene::CPlaneScene()
 		glBufferData(GL_UNIFORM_BUFFER, sizeof(m_matrices), &m_matrices, GL_DYNAMIC_DRAW);
 	}
 
+	m_texture1 = LoadTexture("./textures/badger.png");
+	m_texture2 = LoadTexture("./textures/container2.png");
+	m_textureMask = LoadTexture("./textures/checkerboard.png");
+
+
 	{
 		auto vertShader = OpenGl::CShader::CreateFromFile(GL_VERTEX_SHADER, "./shaders/textured_v.glsl");
 		auto fragShader = OpenGl::CShader::CreateFromFile(GL_FRAGMENT_SHADER, "./shaders/textured_f.glsl");
@@ -152,7 +157,7 @@ OpenGl::CTexture CPlaneScene::LoadTexture(const char* path)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	stbi_image_free(image);
@@ -193,4 +198,11 @@ void CPlaneScene::Draw()
 	glActiveTexture(GL_TEXTURE0 + TEXTURE_BINDINGS::TEXTURE_MASK);
 	glBindTexture(GL_TEXTURE_2D, m_textureMask);
 	glDrawElements(GL_TRIANGLES, g_indexCount, GL_UNSIGNED_SHORT, nullptr);
+
+	glActiveTexture(GL_TEXTURE0 + TEXTURE_BINDINGS::TEXTURE_1);
+	glBindTexture(GL_TEXTURE_2D, m_texture1);
+	glActiveTexture(GL_TEXTURE0 + TEXTURE_BINDINGS::TEXTURE_2);
+	glBindTexture(GL_TEXTURE_2D, m_texture2);
+	glActiveTexture(GL_TEXTURE0 + TEXTURE_BINDINGS::TEXTURE_MASK);
+	glBindTexture(GL_TEXTURE_2D, m_textureMask);
 }
