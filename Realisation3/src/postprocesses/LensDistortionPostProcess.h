@@ -16,10 +16,7 @@ public:
 
 	void Draw(GLuint, glm::uvec2) override;
 
-	bool IsInplace() override
-	{
-		return true;
-	}
+	bool IsInplace() override { return true; }
 
 private:
 	struct Params

@@ -12,7 +12,7 @@ class CVignettePostProcess : public CPostProcess
 public:
 	CVignettePostProcess();
 	void Draw(GLuint, glm::uvec2) override;
-	bool IsInplace() override { return true; };
+	bool IsInplace() override { return false; };
 
 private:
 	struct Params
