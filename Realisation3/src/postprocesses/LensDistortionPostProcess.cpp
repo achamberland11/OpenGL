@@ -38,7 +38,13 @@ CLensDistortionPostProcess::CLensDistortionPostProcess()
 
 void CLensDistortionPostProcess::Draw(GLuint inputTexture, glm::uvec2 imageSize)
 {
-	ImGui::SliderFloat("Lens Curvature", &m_params.curvature, -1.0f, 1.0f);
+	ImGui::Text("Radial Distortion:");
+	ImGui::SliderFloat("K1", &m_params.k1, -1.0f, 1.0f);
+	ImGui::SliderFloat("K2", &m_params.k2, -1.0f, 1.0f);
+
+	ImGui::Text("Tangential Distortion:");
+	ImGui::SliderFloat("P1", &m_params.p1, -0.5f, 0.5f);
+	ImGui::SliderFloat("P2", &m_params.p2, -0.5f, 0.5f);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_paramsUniformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_params), &m_params, GL_DYNAMIC_DRAW);

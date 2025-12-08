@@ -21,9 +21,12 @@ public:
 private:
 	struct Params
 	{
-		float curvature = 0.15f;
-		float padding[3];
+		float k1 = 0.2f;
+		float k2 = 0.0f;
+		float p1 = 0.0f;
+		float p2 = 0.0f;
 	};
+
 
 	OpenGl::CProgram m_program;
 	OpenGl::CBuffer m_paramsUniformBuffer;
