@@ -38,13 +38,13 @@ CMeshScene::CMeshScene()
 	}
 
 	{
-		m_lensDistortionPostProcess = std::make_shared<CLensDistortionPostProcess>();
-		m_drawer.AddPostProcess(m_lensDistortionPostProcess);
+		m_vignettePostProcess = std::make_shared<CVignettePostProcess>();
+		m_drawer.AddPostProcess(m_vignettePostProcess);
 	}
 
 	{
-		m_vignettePostProcess = std::make_shared<CVignettePostProcess>();
-		m_drawer.AddPostProcess(m_vignettePostProcess);
+		m_lensDistortionPostProcess = std::make_shared<CLensDistortionPostProcess>();
+		m_drawer.AddPostProcess(m_lensDistortionPostProcess);
 	}
 }
 
@@ -58,18 +58,18 @@ void CMeshScene::Update(double dt)
 	            m_cameraPosition.x, m_cameraPosition.y, m_cameraPosition.z);
 	ImGui::SliderFloat3("Light Dir", glm::value_ptr(m_lightDir), -1, 1);
 
-	if(m_lensDistortionPostProcess)
-	{
-		bool vignetteEnabled = m_lensDistortionPostProcess->IsEnabled();
-		ImGui::Checkbox("Lens Distortion Post Process", &vignetteEnabled);
-		m_lensDistortionPostProcess->SetEnabled(vignetteEnabled);
-	}
-
 	if(m_vignettePostProcess)
 	{
 		bool distortionEnabled = m_vignettePostProcess->IsEnabled();
 		ImGui::Checkbox("Vignette Post Process", &distortionEnabled);
 		m_vignettePostProcess->SetEnabled(distortionEnabled);
+	}
+
+	if(m_lensDistortionPostProcess)
+	{
+		bool vignetteEnabled = m_lensDistortionPostProcess->IsEnabled();
+		ImGui::Checkbox("Lens Distortion Post Process", &vignetteEnabled);
+		m_lensDistortionPostProcess->SetEnabled(vignetteEnabled);
 	}
 
 	m_drawer.SetLightDir(m_lightDir);

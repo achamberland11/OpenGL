@@ -40,7 +40,8 @@ CVignettePostProcess::CVignettePostProcess()
 
 void CVignettePostProcess::Draw(GLuint inputTexture, glm::uvec2)
 {
-	ImGui::SliderFloat("Vignette Intensity", &m_params.intensity, 0.0f, 2.0f);
+	ImGui::Text("Vignette Intensity:");
+	ImGui::SliderFloat("##Vignette Intensity", &m_params.intensity, 0.0f, 2.0f);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_paramsUniformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(m_params), &m_params, GL_DYNAMIC_DRAW);
