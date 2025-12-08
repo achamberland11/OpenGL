@@ -1,0 +1,88 @@
+#version 330 core
+
+in vec3 v_normal;
+in vec3 v_worldPos;
+in vec2 v_texCoord;
+in vec3 v_viewDir;
+
+out vec4 fragColor;
+
+#define MAX_LIGHTS 2
+
+#define LIGHT_TYPE_DIRECTIONAL 0
+#define LIGHT_TYPE_POINT 1
+#define LIGHT_TYPE_SPOT 2
+
+struct Light
+{
+	vec4 ambientColor;
+	vec4 diffuseColor;
+	vec4 specularColor;
+
+	vec3 dir;
+	vec4 pos;
+
+	float linAttenuation;
+	float quadAttenuation;
+	int type;
+};
+
+layout(std140) uniform Lights
+{
+	Light lights[MAX_LIGHTS];
+	mat4 shadowViewProjMatrix;
+};
+
+uniform sampler2D s_texture;
+uniform sampler2D s_shadowMap;
+
+vec4 computeLighting(int lightIndex, vec3 normal, vec4 diffuseColor)
+{
+	Light light = lights[lightIndex];
+
+	vec3 lightDir = vec3(0, 0, 0);
+	float attenuation = 1;
+
+	if(light.type == LIGHT_TYPE_DIRECTIONAL)
+	{
+		lightDir = normalize(light.dir);
+	}
+	else if(light.type == LIGHT_TYPE_POINT)
+	{
+		vec3 lightVec = light.pos.xyz - v_worldPos;
+		lightDir = normalize(lightVec);
+		float lightDist = length(lightVec);
+		attenuation = 1.0 / (1 + light.linAttenuation * lightDist + light.quadAttenuation * (lightDist * lightDist));
+	}
+
+	float diffuseComp = clamp(dot(normal, lightDir), 0, 1);
+
+	vec3 reflectDir = reflect(-lightDir, normal);
+	float specComp = pow(clamp(dot(normalize(v_viewDir), reflectDir), 0, 1), 10);
+
+	return attenuation * (light.ambientColor + diffuseComp * light.diffuseColor * diffuseColor + specComp * light.specularColor);
+}
+
+float computeShadow()
+{
+	vec4 shadowFragPos = shadowViewProjMatrix * vec4(v_worldPos, 1);
+	vec3 shadowProjCoords = (shadowFragPos.xyz / shadowFragPos.w) * 0.5 + 0.5;
+	float shadowDepth = texture(s_shadowMap, shadowProjCoords.xy).r;
+	float currentDepth = shadowProjCoords.z;
+	float shadowBias = 0.005;
+	float shadow = (currentDepth - shadowBias) > shadowDepth ? 0.0 : 1.0;
+	return shadow;
+}
+
+void main()
+{
+	vec3 nNormal = normalize(v_normal);
+	vec4 finalColor = vec4(0);
+	vec4 diffuseColor = texture(s_texture, v_texCoord);
+	float shadow = computeShadow();
+	for(int i = 0; i < MAX_LIGHTS; i++)
+	{
+		finalColor += computeLighting(i, nNormal, diffuseColor) * shadow;
+	}
+	fragColor = finalColor;
+}
